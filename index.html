@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="乘风主题互动时间轴，点击主时间节点进入小范围时间轴并跳转到相关网页。" />
+    <title>瑶台月下 · 时间线</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?85adec5e7ddaf7a2e89fda512116fe88";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero" id="pageHero">
+        <p class="eyebrow">YAOTAIYUEXIA TIMELINE</p>
+        <h1>瑶台月下时间线</h1>
+        <div class="hero-actions">
+          <button class="primary-button" id="copyPageLink" type="button">复制分享网址</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="timeline-section view is-active" id="mainView" aria-labelledby="timelineTitle">
+          <div class="section-heading">
+            <p class="eyebrow">Main Stages</p>
+            <h2 id="timelineTitle">主时间轴</h2>
+            <p>从“乘风前”到“总决赛”，点击阶段进入小范围时间轴。</p>
+          </div>
+          <div class="main-timeline" id="mainTimeline" aria-live="polite"></div>
+        </section>
+
+        <section class="timeline-section view" id="detailView" aria-labelledby="detailStageTitle">
+          <button class="back-button" id="backToMain" type="button">返回主时间轴</button>
+          <div class="section-heading detail-heading">
+            <h2 id="detailStageTitle"></h2>
+            <p id="detailStageSummary"></p>
+          </div>
+          <div class="mini-timeline" id="miniTimeline" aria-live="polite"></div>
+        </section>
+
+        <section class="timeline-section view" id="mailboxView">
+          <button class="back-button" id="backFromMailbox" type="button">返回主时间轴</button>
+          <h2 class="mailbox-title">粉丝留言</h2>
+          <div class="mailbox-content">
+            <div id="cusdis_thread" data-host="https://cusdis.com" data-app-id="463f492e-b3f9-4c41-ba8c-4987a42c2a70" data-page-id="yaotaixia_timeline"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <div class="image-preview" id="imagePreview" onclick="closeImagePreview()">
+      <span class="close-btn" onclick="closeImagePreview()">×</span>
+      <img class="preview-image" id="previewImage" src="" alt="预览图片">
+    </div>
+
+    <div class="floating-icons">
+      <button class="floating-icon mailbox-icon" id="mailboxBtn" type="button" title="留言板">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <script src="./script.js"></script>
+    <script async src="https://cusdis.com/js/cusdis.es.js"></script>
+  </body>
+</html>

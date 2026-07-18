@@ -1,0 +1,824 @@
+const stageNames = ["乘风前", "初舞台", "一公", "二公", "三公", "四公", "五公", "总决赛"];
+
+const stageSummaries = [
+  "宿命、玫瑰与剧宣",
+  "是拉娘还是命中注定",
+  "我是为一个姐姐而来的",
+  "少了我的手臂当枕头你习不习惯",
+  "你还是来看你的瑶妹来了",
+  "她想和你合作&我后悔了",
+  "凌晨五点下班的那个谁和那个谁",
+  "瑶台月下，不止这个夏天",
+];
+
+const subNodeNames = ["前期资料", "舞台记录", "复盘整理"];
+
+const mainStages = stageNames.map((name, index) => ({
+  id: getStageId(index),
+  title: name,
+  summary: stageSummaries[index],
+  background: index === 0 ? "bg-main" : name,
+  subTimeline: getStageTimeline(index, name),
+}));
+
+const mainView = document.querySelector("#mainView");
+const detailView = document.querySelector("#detailView");
+const mainTimeline = document.querySelector("#mainTimeline");
+const miniTimeline = document.querySelector("#miniTimeline");
+const detailStageTitle = document.querySelector("#detailStageTitle");
+const detailStageSummary = document.querySelector("#detailStageSummary");
+const backToMain = document.querySelector("#backToMain");
+const copyPageLink = document.querySelector("#copyPageLink");
+const toast = document.querySelector("#toast");
+
+let toastTimer = null;
+
+function getStageId(index) {
+  return [
+    "chengfengqian",
+    "chuwutai",
+    "yigong",
+    "ergong",
+    "sangong",
+    "sigong",
+    "wugong",
+    "zongjuesai",
+  ][index];
+}
+
+function getStageTimeline(index, stageName) {
+  if (index === 0) {
+    return createBeforeStageTimeline();
+  }
+
+  if (index === 1) {
+    return createFirstStageTimeline();
+  }
+
+  if (index === 2) {
+    return createYigongTimeline();
+  }
+
+  if (index === 3) {
+    return createErgongTimeline();
+  }
+
+  if (index === 4) {
+    return createSangongTimeline();
+  }
+
+  if (index === 5) {
+    return createSigongTimeline();
+  }
+
+  if (index === 6) {
+    return createWugongTimeline();
+  }
+
+  if (index === 7) {
+    return createZongjuesaiTimeline();
+  }
+
+  return createSubTimeline(stageName, index);
+}
+
+function createSubTimeline(stageName, stageIndex) {
+  return subNodeNames.map((nodeName, nodeIndex) => ({
+    id: `${getStageId(stageIndex)}-${nodeIndex + 1}`,
+    title: `${stageName}  ${nodeName}`,
+    summary: `这里可以整理${stageName}阶段的${nodeName}，下方已预留 10 个跳转网址模块。`,
+    links: createLinkModules(stageName, nodeName),
+  }));
+}
+
+function createBeforeStageTimeline() {
+  return [
+    {
+      id: "chengfengqian-sumingzhidi",
+      title: "宿命之敌（2020）",
+      summary: "从《宿命之敌》开机到圣诞节一起过，整理相关官宣、Cut 和互动入口。",
+      links: [
+        link("2020.11.10《宿命之敌》开机｜官宣博", "https://weibo.com/7516881342/4569734361647084"),
+        link("2020.11.10《宿命之敌》开机｜剧情Cut", "https://weibo.com/1686445450/5292331500569927"),
+        link("2020.11.10《宿命之敌》开机｜花絮Cut", "https://weibo.com/6435197486/5316282335625337"),
+        link("2020.12.25 圣诞节一起过｜娜就聊姐姐", "https://weibo.com/7836742822/5295911128793172"),
+        link("2020.12.25 圣诞节一起过｜瑶微博", "https://weibo.com/2864280474/4585721131959902"),
+        link("2020.12.25 圣诞节一起过｜月抖音", "https://v.douyin.com/j3uE06lRS5s/"),
+        { label: "2021.01.15 瑶月微博互关", url: "", image: "./images/微博互关.jpg" },
+      ],
+    },
+    {
+      id: "chengfengqian-meigudegushi",
+      title: "玫瑰的故事（2024）",
+      summary: "整理《玫瑰的故事》相关合照与社交片段。",
+      links: [
+        link("合照", "https://weibo.com/6435197486/5316288270568804"),
+        link("被拉着社交", "https://weibo.com/6435197486/5315496415068293"),
+      ],
+    },
+    {
+      id: "chengfengqian-juxuan",
+      title: "相互剧宣",
+      summary: "记录 2025 与 2026 年两次相互剧宣互动。",
+      links: [
+        link("2025.10.24 月帮瑶剧宣《水龙吟》｜“支持瑶瑶！支持这颗西方桃”“谢谢月月~”", "https://weibo.com/2864280474/5225212671165621"),
+        link("2026.2.23 瑶帮月剧宣《好好的时光》｜“爱你,瑶瑶”", "https://weibo.com/2864280474/5269579761720278"),
+      ],
+    },
+  ];
+}
+
+function createFirstStageTimeline() {
+  return [
+    {
+      id: "chuwutai-chujianmian",
+      title: "初见面（2026.3.31-4.2）",
+      summary: "从到达乐田到初见面录制，记录第一次正式相遇相关物料。",
+      links: [
+        link("2026.3.31 到达乐田｜路透拥抱视频", "https://weibo.com/6850943971/5282565998510264"),
+        link("2026.4.2 初见面录制｜你来啦！给你暖暖 ～", "https://weibo.com/7315067461/5285764911073321"),
+        link("“瑶瑶算吗” 00:53", "https://video.weibo.com/show?fid=1034:5283281856561159"),
+      ],
+    },
+    {
+      id: "chuwutai-stage",
+      title: "初舞台（2026.4.3-4.4）",
+      summary: "整理初舞台上下录制、后台互动与拉娘视频出圈资料。",
+      links: [
+        link("2026.4.3 初舞台上录制｜舞台上站一起", "https://weibo.com/7836742822/5313060283355369"),
+        link("2026.4.3 初舞台上录制｜后台走向对方", "https://weibo.com/1744450145/5313240033920979"),
+        link("2026.4.4 初舞台下录制｜坐一起", "https://weibo.com/7836742822/5284069307844738"),
+        link("初舞台拉娘视频出圈｜抖音", "https://v.douyin.com/Qi91kT693ZQ/"),
+        link("初舞台拉娘视频出圈｜微博", "https://weibo.com/1775084261/5284101687876207"),
+      ],
+    },
+  ];
+}
+
+function createYigongTimeline() {
+  return [
+    {
+      id: "yigong-zudui-xiaokao",
+      title: "组队与小考4.5-4.6",
+      summary: "记录组队、小考和一公前期关键互动。",
+      links: [
+        link("我是为一个姐姐而来的", "https://v.douyin.com/dPvftItBVuU/"),
+        link("瑶：我没有办法欺骗自己的心", "https://weibo.com/7836742822/5284685468404301"),
+        link("飞吻", "https://weibo.com/3911081238/5297140860977867"),
+        link("月：嘉豪人格初显现", "https://weibo.com/7315067461/5284684120459183"),
+        link("一公组队cut","https://www.bilibili.com/video/BV1VEDQBfEjb/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&vd_source=4679e3b358c87e0f85b8f302fce9d9a1"),
+        link("一公小考｜吃到火锅了", "https://weibo.com/7509697069/5286283941519743"),
+        link("一公小考｜🌈贴脸", "https://weibo.com/7836742822/5289388032660421"),
+        link("一公小考｜瑶教月戏腔", "https://weibo.com/7315067461/5287939193966140"),
+        link("一公小考｜依赖", "https://weibo.com/7836742822/5285410313864228"),
+        link("一公小考｜把伞给我", "https://weibo.com/7315067461/5289386732164342"),
+        link("一公小考｜拼床睡", "https://weibo.com/1686445450/5289387831071037"),
+      ],
+    },
+    {
+      id: "yigong-lianxi",
+      title: "练习期间4.7-4.9",
+      summary: "整理乘风时光机、上下班和宿舍生活相关内容。",
+      links: [
+        link("乘风时光机录制-林有有*岳绮罗（4.16播出）｜月vlog“这么富贵吗妹妹”", "https://video.weibo.com/show?fid=1034:5288316283846695"),
+        link("瑶瑶vlog", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=7"),
+        link("月vlog", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=8"),
+        link("加更宿舍", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=14"),
+        link("缠绕（初步ds体现）", "https://weibo.com/6601653147/5288307099699426"),
+        link("上下班｜4.6", "https://weibo.com/7457720530/5284700437349309"),
+        link("上下班｜4.7", "https://weibo.com/7457720530/5285027921266470"),
+        link("上下班｜4.8", "https://video.weibo.com/show?fid=1034:5285885403398197"),
+        link("宿舍生活｜关闹铃", "https://weibo.com/1775084261/5289021651551734"),
+        link("宿舍生活｜一睁眼就看到你啦", "https://weibo.com/7478943298/5291925561413158"),
+        link("宿舍生活｜床照", "https://weibo.com/2350442141/R1nonpCzQ"),
+      ],
+    },
+    {
+      id: "yigong-gongyan",
+      title: "公演期间4.10-4.11",
+      summary: "记录一公上下录制、采访、直拍、上下班和双人合照。",
+      links: [
+        link("2026.4.10 一公上｜上班比心", "https://video.weibo.com/show?fid=1034:5286226593513529"),
+        link("2026.4.10 一公上｜一公上录制+直拍", "https://weibo.com/6435197486/5306115828227928"),
+        link("2026.4.10 一公上｜瑶发第一张双人合照", "http://xhslink.com/o/13z9LMWdId0"),
+        link("2026.4.10 一公上｜下班手挽手", "http://xhslink.com/o/b60yiMJ1tJ"),
+        link("2026.4.10 一公上｜下班贴贴", "http://xhslink.com/o/6vZIkIcuieT"),
+        link("2026.4.11 一公下｜上班", "https://weibo.com/7457720530/5286527169987533"),
+        link("媒体采访｜入场", "http://xhslink.com/o/AtbGvb9GYN7"),
+        link("媒体采访｜比心", "http://xhslink.com/o/1iQW62VIt5J"),
+        link("媒体采访｜戳脸", "http://xhslink.com/o/8dgFdurgzMe"),
+        link("媒体采访｜全", "http://xhslink.com/o/2oV2ouycSVv"),
+        link("央妈采访｜正片上", "https://weibo.com/7735105675/5290503471892877"),
+        link("央妈采访｜正片下", "https://weibo.com/7735105675/5290865105044409"),
+        link("一公下录制+直拍（精简版）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=6"),
+        link("2026.4.11 一公下｜下班", "https://weibo.com/8252020079/5286656225579463"),
+        link("《霍元甲》舞台", "https://www.bilibili.com/video/BV1zad9BxEX3/?spm_id_from=333.1387.homepage.video_card.click&vd_source=4679e3b358c87e0f85b8f302fce9d9a1"),
+      ],
+    },
+  ];
+}
+
+function createErgongTimeline() {
+  return [
+    {
+      id: "ergong-zudui-xiaokao",
+      title: "组队与小考4.12-4.13",
+      summary: "整理二公组队、上下班、宿舍生活和小考相关内容。",
+      links: [
+        link("组队｜上上贴脸", "https://weibo.com/7836742822/5289895627327434"),
+        link("组队｜月：这次我为你爆灯", "https://weibo.com/7836742822/5288672430920388"),
+        link("组队｜天蝎瑶：我放的第一个和第二个", "https://weibo.com/1753015991/5288663102788156"),
+        link("组队｜正片cut", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=12"),
+        link("4.12 上班", "https://weibo.com/8252020079/5286892254791422"),
+        link("4.13 上班", "https://weibo.com/8252020079/5287241669674995"),
+        link("宿舍生活｜吃早餐", "https://weibo.com/7315067461/5291922833017931"),
+        link("宿舍生活｜帮忙解头发", "https://weibo.com/7836742822/5289056305944050"),
+        link("小考cut", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=13"),
+      ],
+    },
+    {
+      id: "ergong-shiguangji",
+      title: "乘风时光机录制4.14",
+      summary: "整理 4.14 乘风时光机录制当天上下班与共创内容。",
+      links: [
+        link("4.14 上班", "https://weibo.com/8252020079/5287575575070904"),
+        link("儿童皮", "https://weibo.com/3911081238/5295561748251691"),
+        link("儿童节抖音共创", "https://v.douyin.com/avSFiZa8kK0/"),
+        link("4.14 下班", "https://weibo.com/8252020079/5287766493760376"),
+      ],
+    },
+    {
+      id: "ergong-lianxi",
+      title: "练习期间4.15-4.23",
+      summary: "整理二公练习期共创、加练、上下班、训练室、采访和宿舍生活。",
+      links: [
+        link("#闺蜜双人共创", "https://v.douyin.com/XuRC7bbfunI"),
+        link("瑶 4.21 凌晨携十五个耙耙柑找加练的月（XPP小耙耙由来）", "https://weibo.com/1801637412/5291709561045939"),
+        link("彩蛋之“真爱降临”", "https://v.douyin.com/cue7-Oh4q3M/"),
+        link("4.21 凌晨下班", "https://weibo.com/7805767599/5313070110343535"),
+        link("4.21 晚上下班", "https://weibo.com/8252020079/5290274835138958"),
+        link("4.22 上班", "https://weibo.com/8252020079/5290466536064840"),
+        link("孤北训练室", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=22"),
+        link("瑶花少面试（张月 就是很喜欢）", "https://weibo.com/6435197486/5311121149922043"),
+        link("4.22 下班", "https://weibo.com/5642240793/5290674549424689"),
+        link("4.23 转场", "https://weibo.com/8252020079/5290890076622232"),
+        link("4.23 下班（第一次看到应援灯牌）", "https://weibo.com/8252020079/5290959971552245"),
+        link("瑶瑶认证cp名", "https://weibo.com/7374136166/5290995680024955"),
+        link("二公加更宿舍生活", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=20"),
+        link("月vlog", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=21"),
+      ],
+    },
+    {
+      id: "ergong-gongyan",
+      title: "公演期间4.24-4.25",
+      summary: "整理二公公演期间上下班、转场、彩排、直拍和正片内容。",
+      links: [
+        link("4.24 上班（月认证cp名）", "https://weibo.com/7457720530/5291221322302698"),
+        link("4.24 转场", "https://weibo.com/8252020079/5291297361627159"),
+        link("转场之冉冉助力", "https://weibo.com/7315067461/529129627739887"),
+        link("二公上直拍精简版", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=17"),
+        link("4.24 下班之月下共舞", "https://weibo.com/8252020079/5291373445253621"),
+        link("4.25 上班", "https://weibo.com/8252020079/5291581376828388"),
+        link("4.25 转场", "https://weibo.com/8252020079/5291612679704863"),
+        link("孤北彩排版", "https://weibo.com/5583809232/5292276218597888"),
+        link("4.25 正片及直拍精简版", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=19"),
+        link("《孤单北半球》舞台", "https://www.bilibili.com/video/BV1FVoQBREX7/?spm_id_from=333.1387.homepage.video_card.click&vd_source=4679e3b358c87e0f85b8f302fce9d9a1"),
+      ],
+    },
+  ];
+}
+
+function createSangongTimeline() {
+  return [
+    {
+      id: "sangong-zudui-xiaokao",
+      title: "组队与小考4.26-4.27",
+      summary: "整理三公组队、小考、《娜就聊姐姐》录制和上下班转场内容。",
+      links: [
+        link("4.26 上班", "https://weibo.com/8252020079/5291981002773950"),
+        link("三公组队精简版", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=24"),
+        link("加更“都看看”", "https://weibo.com/1686445450/5294462080909335"),
+        link("“幸福的邀约是瑶月”", "https://v.douyin.com/UzQgGqmW_sI/"),
+        link("《娜就聊姐姐》录制", "https://www.bilibili.com/video/BV1zfdFBMEgf/?spm_id_from=333.1387.favlist.content.click&vd_source=4679e3b358c87e0f85b8f302fce9d9a1"),
+        link("“暧”还是“爱”", "https://v.douyin.com/udKCwBb0Jek/"),
+        link("4.27 上班", "https://weibo.com/7478943298/5295916475225696"),
+        link("4.27 转场｜月“瑶瑶的？”", "https://weibo.com/6587455879/5292336768617153"),
+        link("三公小考精简版", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=25"),
+      ],
+    },
+    {
+      id: "sangong-lianxi",
+      title: "放假练习期间4.28-5.21",
+      summary: "整理三公放假练习期的直播、vlog、上下班、转场、同车、采访和联产内容。",
+      links: [
+        link("4.28 上班", "https://weibo.com/8252020079/5292668152187017"),
+        link("4.29 月直播cut", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=23"),
+        link("5.3 月vlog糖点", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=27"),
+        link("5.4 者姐姐直播｜“她俩干啥都一起”", "https://weibo.com/7315067461/5294855941000529"),
+        link("5.5 瑶《乘风姐答时刻》", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=28"),
+        link("5.6 上班", "https://weibo.com/8252020079/5295575625108309"),
+        link("5.7 凌晨｜瑶下班“她还有点晚”", "https://weibo.com/6587455879/5295751101941203"),
+        link("5.7 上班", "https://weibo.com/8252020079/5295993251694133"),
+        link("5.7 月转场｜“我和瑶瑶”", "https://weibo.com/7493050917/5296030033641531"),
+        link("5.8 冉姐生日，月去串门", "https://weibo.com/1686445450/5299533874989803"),
+        link("5.9 师姐帮唱小考", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=30"),
+        link("5.9 音准对决赛糖点（21年后我听你唱歌你听我唱歌）", "https://weibo.com/7478943298/5299171110422164"),
+        link("5.9 乘风2026主题曲cut", "https://weibo.com/5890043304/5299184976791717"),
+        link("5.9 双人同车下班", "https://weibo.com/1817258154/5296981318829393"),
+        link("5.10 主题曲录制双人转场", "https://weibo.com/6587455879/5296884286751710"),
+        link("5.10 三公延期两家工作室文案私通", "https://weibo.com/7510974805/5297170485874556"),
+        link("5.10 双人同车下班", "https://weibo.com/6230913594/5297178706707425"),
+        link("5.11 不同组但一起下班", "https://weibo.com/8252020079/5297484278794547"),
+        link("5.11 回宿舍一起散步", "https://weibo.com/8234376893/5302434622867383"),
+        link("5.13 月采访提到粉蓝紫", "https://weibo.com/6601653147/5298174694000902"),
+        link("5.15 欧诗漫双人前后商务直播--月vlog糖", "https://weibo.com/6435197486/5303648240535136"),
+        link("5.16 淡淡直播｜“月儿老来偷看她们家瑶”", "https://weibo.com/7315067461/5299309696522946"),
+        link("5.18 代斯直播｜张月陈瑶互补", "https://weibo.com/8234376893/5299939219604979"),
+        link("5.18 月采访提及瑶", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=33"),
+        link("5.19 上班", "https://weibo.com/8252020079/5300262367397208"),
+        link("5.20 乘风时光机儿童皮（下）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=34"),
+        link("【XPP自创活动520&521联产】", "https://weibo.com/6419798760/5300791583704439"),
+        link("5.20 上班", "https://weibo.com/8252020079/5300674242810910"),
+        link("5.21 上班", "https://weibo.com/8252020079/5301067069788755"),
+      ],
+    },
+    {
+      id: "sangong-gongyan",
+      title: "公演期间5.22-5.24",
+      summary: "整理三公公演期间上下班、转场、直播精简版、合拍、彩蛋和名场面。",
+      links: [
+        link("5.22 上班", "https://weibo.com/8252020079/5301445790272660"),
+        link("5.22 转场", "https://weibo.com/8252020079/5301423249559843"),
+        link("三公上直播精简版（主题曲牵手+互re+瑶安慰月）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=35"),
+        link("5.23 合拍凯东摇", "https://weibo.com/6435197486/5304243612288396"),
+        link("三公中直播精简版（上台野心家下台大狗狗）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=36"),
+        link("彩蛋之月拿瑶的话筒唱野心家", "https://weibo.com/7747861011/5302018138706339"),
+        link("5.23 下班", "https://weibo.com/8252020079/5301875861884390"),
+        link("5.24 上班转场", "https://weibo.com/8252020079/5302166333164244"),
+        link("三公下直播精简版（名场面之嗦吸管、宇宙第一）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=37"),
+      ],
+    },
+  ];
+}
+
+function createSigongTimeline() {
+  return [
+    {
+      id: "sigong-zudui-xiaokao",
+      title: "组队与小考5.25-5.26",
+      summary: "整理四公组队、小考、上下班与应援礼包相关内容。",
+      links: [
+        link("5.25 凌晨组队节选（酸涩风味）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=42"),
+        link("5.25 和李斯丹妮合拍抖音", "https://v.douyin.com/z-h7Gk6TLQE/"),
+        link("5.25 上班", "https://weibo.com/8252020079/5302533398463845"),
+        link("5.26 小考｜月听瑶瑶唱戏腔", "https://weibo.com/3911081238/5304245962408376"),
+        link("5.26 下班｜月收cp应援礼包", "https://weibo.com/5898473845/5302997888532697"),
+      ],
+    },
+    {
+      id: "sigong-lianxi",
+      title: "放假练习期间5.27-6.4",
+      summary: "整理四公放假练习期官宣、vlog、直播、上下班、时光机和后台内容。",
+      links: [
+        link("5.27（吾爱妻）官宣日｜瑶瑶发合照-结婚照", "https://weibo.com/2864280474/5303209963030659"),
+        link("5.27（吾爱妻）官宣日｜月月发合照-床照", "https://weibo.com/2350442141/5303282516106494"),
+        link("6.1 月vlog节选（瑶领月回家）", "https://weibo.com/2350442141/5305005542475449"),
+        link("6.1 儿童节双人抽象共创", "https://v.douyin.com/avSFiZa8kK0/"),
+        link("6.1 月直播节选", "https://weibo.com/6435197486/5305097510717019"),
+        link("6.1 上班", "https://weibo.com/6587455879/5305119475762033"),
+        link("6.2 上班", "https://weibo.com/8252020079/5305368650713003"),
+        link("6.3 凌晨下班｜“宇宙第一”被ky", "https://weibo.com/6137592317/5305575317438725"),
+        link("6.3 上班", "https://weibo.com/8252020079/5305792095587586"),
+        link("6.3 月工作室vlog｜王元媛和白晓荷在后台", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=48"),
+        link("6.3 乘风时光机“媛荷”", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=49"),
+        link("6.3 瑶vlog节选", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=50"),
+        link("6.4 上班", "https://weibo.com/8252020079/5306112477758863"),
+        link("6.5 凌晨下班｜月提及瑶", "https://weibo.com/6504375565/5306243667200004"),
+      ],
+    },
+    {
+      id: "sigong-gongyan",
+      title: "公演期间6.5-6.7",
+      summary: "整理四公公演期间转场、直播精简版、vlog、彩蛋、下班和后台内容。",
+      links: [
+        link("6.5 团秀公演一起转场", "https://weibo.com/6840023143/5306503713787545"),
+        link("6.5 团秀直播精简版（瑶给月比兔子耳朵；天蝎女吃醋）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=52"),
+        link("6.5 瑶vlog畅想双人舞台", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=55"),
+        link("彩蛋之像rua小呼一样捧月的脸", "https://weibo.com/6597717495/5306577599077940"),
+        link("6.5 一起下班和久违的双人饭撒", "https://weibo.com/8252020079/5306606720127337"),
+        link("6.6 上班", "https://weibo.com/8252020079/5306866823331948"),
+        link("6.6 跨团双人秀直播精简版（瑶教月如何优雅点赞+泪桥出分后的冷脸瑶）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=53"),
+        link("彩蛋之超近距离背后抱", "https://weibo.com/7354684001/5307590256888431"),
+        link("6.6 后台一起坐电梯", "https://weibo.com/6230913594/5306973056926857"),
+        link("6.7 上班", "https://weibo.com/8252020079/5307219102140199"),
+        link("6.7 团内双人秀直播精简版（再次背后抱+瑶听怪我听哭了+安慰很久）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=54"),
+        link("彩蛋之爱吃东西的女人如何爱人？当然是疯狂投喂！", "https://weibo.com/6435197486/5308017346088551"),
+      ],
+    },
+  ];
+}
+
+function createWugongTimeline() {
+  return [
+    {
+      id: "wugong-zudui-xiaokao",
+      title: "组队与小考6.8-6.9",
+      summary: "整理五公组队、小考、上下班、vlog、双人合照和甜蜜的任务内容。",
+      links: [
+        link("6.8 组队正片cut", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=57"),
+        link("彩蛋之拍立得", "https://weibo.com/6419798760/5307596349375426"),
+        link("6.8 上班", "https://weibo.com/8252020079/5307561670870545"),
+        link("6.8 下班", "https://weibo.com/7999515864/5307709881583653"),
+        link("6.9 小考正片cut", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=58"),
+        link("6.9 月vlog节选（想和瑶说话但是没说上）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=59"),
+        link("6.9 瑶瑶下班饭撒", "https://weibo.com/2276520815/5307996521629700"),
+        link("6.9 瑶瑶发微博双人合照含量高", "https://weibo.com/2864280474/5308016527413451"),
+        link("6.9 瑶瑶录制甜蜜的任务-解释一公后台噘嘴含义", "https://weibo.com/7923127215/5312626755895729"),
+        link("6.10 凌晨月下班饭撒", "https://weibo.com/6587455879/5308062153835779"),
+      ],
+    },
+    {
+      id: "wugong-lianxi",
+      title: "放假练习期间6.10-6.18",
+      summary: "整理五公练习期 vlogs、上班、陪看、转场、时光机和彩排相关内容。",
+      links: [
+        link("6.12 月vlog节选（瑶嫌月头饰少：展示主人形态；月看瑶瑶打架子鼓）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=56"),
+        link("6.16 上班", "https://weibo.com/8252020079/5310428109606109"),
+        link("6.16 合体录制陪看（全集糖点：约定旅游；月给瑶端吃的）", "https://weibo.com/6601653147/5314396192773924"),
+        link("6.17 上班", "https://weibo.com/8252020079/5310829702416160"),
+        link("6.17 转场擦车而过", "https://weibo.com/6264858702/5310818014989173"),
+        link("6.17 乘风时光机结尾“月月你的在哪~”", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=61"),
+        link("6.18 上班", "https://weibo.com/8252020079/5311173605986207"),
+        link("6.18 月看瑶彩排双人曲", "https://weibo.com/2277325014/5314097471817626"),
+      ],
+    },
+    {
+      id: "wugong-gongyan",
+      title: "公演期间6.19-6.20",
+      summary: "整理五公公演期间团秀、双人秀、下班、抖音、vlog 等内容。",
+      links: [
+        link("6.19 上班", "https://weibo.com/8252020079/5311544470536365"),
+        link("6.19 五公团秀直播精简（月变脸合集+月主动找瑶+一起和怡打闹）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=62"),
+        link("彩蛋之二十指紧扣", "https://weibo.com/7836742822/5311641359221755"),
+        link("6.20 下班xpp视角", "https://weibo.com/6587455879/5311703566780612"),
+        link("6.20 五公双人秀直播精简版（月给女王提裙子+瑶主动找月捂眼睛+坐一起re）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=63"),
+        link("彩蛋之唇语解读版", "https://weibo.com/6435197486/5312132914086403"),
+        link("6.20 西装&婚纱双人抖音", "https://v.douyin.com/chzu1HkZxXU/"),
+        link("6.20 后台等电梯聊天（你好大方哟~）", "https://weibo.com/6435197486/5312182166491996"),
+        link("6.20 晚双人转场", "https://weibo.com/8252020079/5312022750695208"),
+        link("6.24 瑶vlog节选", "https://weibo.com/6435197486/5313367163797968"),
+        link("6.26 月vlog节选（把瑶瑶当逗号用了hh）", "https://weibo.com/6435197486/5314088370181536"),
+      ],
+    },
+  ];
+}
+
+function createZongjuesaiTimeline() {
+  return [
+    {
+      id: "zongjuesai-party",
+      title: "组队与颁奖party（终于同组了！）6.21",
+      summary: "整理总决赛前组队、特别企划和双人下班内容。",
+      links: [
+        link("特别企划双人Cut", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=67"),
+        link("字幕整合版双人下班", "https://weibo.com/7374136166/5312156796454336"),
+      ],
+    },
+    {
+      id: "zongjuesai-lianxi-caipai",
+      title: "练习彩排期间6.22-6.26",
+      summary: "整理总决赛练习彩排期上下班、训练室、双人转场、彩排和偶像剧般的相遇。",
+      links: [
+        link("6.22 上班", "https://video.weibo.com/show?fid=1034:5312265638051899"),
+        link("6.23 凌晨月下班（蓝色紫色一半一半~）", "https://weibo.com/7805767599/5312432504570724"),
+        link("6.24 hey girl训练室（可爱 爱~）", "https://weibo.com/6435197486/5315115704651609"),
+        link("6.24 长公主训练室", "https://weibo.com/6435197486/5315120793387724"),
+        link("6.24 双人转场（进）", "https://video.weibo.com/show?fid=1034:5313415976255496"),
+        link("6.24 双人转场（出）一起听xpp们合唱！", "https://weibo.com/6587455879/5313463757049904"),
+        link("6.24 双人转场散步", "https://video.weibo.com/show?fid=1034:5313444048470023"),
+        link("6.25 双人转场", "https://weibo.com/7805767599/5313755132723280"),
+        link("6.25 hey girl舞蹈部分彩排", "https://weibo.com/6435197486/R84yllPkc"),
+        link("《hey girl》彩排双人舞蹈部分", "https://v.douyin.com/_IAqEl2VfLE/")，
+        link("《想见你想见你想见你》彩排音频", "https://weibo.com/7836742822/5314591094735581"),
+        link("《想见你想见你想见你》彩排视频", "https://weibo.com/7836742822/5316668756592070"),
+        link("6.26 凌晨瑶听xpp们唱歌月紧随其后", "https://weibo.com/6435197486/5313862167168405"),
+        link("6.26 凌晨偶像剧般的相遇", "https://video.weibo.com/show?fid=1034:5313861751078943"),
+        link("6.26 情侣装研究黑狗ending pose（早上一起从酒店电梯里出来）", "https://weibo.com/6435197486/R839L1Ydd"),
+      ],
+    },
+    {
+      id: "zongjuesai-gongyan",
+      title: "总决赛公演日6.27",
+      summary: "整理总决赛公演日应援、直拍、抖音、舞台、彩蛋、背后抱和毕业图合集。",
+      links: [
+        link("6.27 xpp们的婚礼应援视频", "https://weibo.com/7992902362/R6ZHAnfx4"),
+        link("6.27 直拍精简（仍有一小时高糖~）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=70"),
+        link("6.27 双人抖音（一开始想卡1314后面想卡1413）", "https://v.douyin.com/chzu1HkZxXU/"),
+        link("6.27 hey girl微博", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=69"),
+        link("彩蛋之笑得超开心的瑶瑶", "https://weibo.com/6682174245/5314537247998795"),
+        link("彩蛋之瑶帮月弄鞋带", "https://weibo.com/1686445450/5314524689203939"),
+        link("《那些花儿》感情浓度很高很高", "https://weibo.com/7331152707/R6ejKnNWF"),
+        link("《hey girl》舞台", "https://www.bilibili.com/video/BV1bz7s6eEC3/?spm_id_from=333.1387.homepage.video_card.click&vd_source=4679e3b358c87e0f85b8f302fce9d9a1"),
+        link("《想见你想见你想见你》舞台", "https://www.bilibili.com/video/BV1k37s6XE2C/?spm_id_from=333.1387.homepage.video_card.click&vd_source=4679e3b358c87e0f85b8f302fce9d9a1"),
+        link("《那些花儿》舞台", "https://www.bilibili.com/video/BV1r57s6DEqf/?spm_id_from=888.80997.embed_other.whitelist&bvid=BV1r57s6DEqf&vd_source=4679e3b358c87e0f85b8f302fce9d9a1"),
+        link("直播断了之后的背后抱", "https://weibo.com/1775084261/5314788137636456"),
+        link("gzry视角想见你", "https://weibo.com/6435197486/5316550137483392"),
+        link("所有舞台双人图合集（毕业快乐！）", "https://weibo.com/2277325014/5314910155186510"),
+      ],
+    },
+    {
+      id: "zongjuesai-langhou",
+      title: "浪后6.28-今",
+      summary: "整理浪后访谈、vlog、商务直播和路透视频 cut。",
+      links: [
+        link("6.30 月《TA自成风》访谈cut", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=73"),
+        link("7.2 温峥嵘vlog朋丫cut", "https://weibo.com/6435197486/5316207368476515"),
+        link("7.3 月商务直播｜“指橙为粉”并且嘚瑟", "https://weibo.com/6435197486/R70WaCQBH"),
+        link("7.10 虾虾舞蹈老师视频cut（二公和总决赛）", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=83"),
+        link("豆瓣精品贴合集", "https://www.douban.com/doubanapp/dispatch?uri=%2Fgroup%2Ftopic%2F493903637&_spm_id=MjQ4OTE2NzUx&_i=8408425226fd73f"),
+        link("7.17 录制我家那闺女路透视频合集(火锅局+动物园)", "https://weibo.com/6435197486/R98Pyvjt2"),
+        link("7.17 豆瓣路透汇总贴","https://www.douban.com/doubanapp/dispatch?uri=%2Fgroup%2Ftopic%2F494229033&_spm_id=MTcyNjQ2MTUz&_i=8430042326fd73f"),
+        link("7.17 闺女录制路透碎糖汇总","https://weibo.com/6419798760/5321804971250354"),
+        link("7.17 彩蛋之吃薯片，私下相处好可爱！","https://weibo.com/5898473845/R97iRxob4"),
+      ],
+    },
+  ];
+}
+
+function link(label, url) {
+  return { label, url };
+}
+
+function createLinkModules(stageName, nodeName) {
+  const links = [];
+  for (let i = 1; i <= 10; i++) {
+    links.push({ label: `${nodeName} 模块 ${i}`, url: "#" });
+  }
+  return links;
+}
+
+function renderMainTimeline() {
+  mainTimeline.innerHTML = "";
+  mainStages.forEach((stage, index) => {
+    const item = document.createElement("article");
+    item.className = "stage-item";
+    item.setAttribute("data-stage-id", stage.id);
+    item.style.animationDelay = `${index * 180}ms`;
+
+    item.innerHTML = `
+      <div class="stage-card" role="button" tabindex="0">
+        <div>
+          <h3>${stage.title}</h3>
+          <p>${stage.summary}</p>
+        </div>
+        <span class="stage-arrow">→</span>
+      </div>
+    `;
+
+    item.querySelector(".stage-card").addEventListener("click", () => {
+      openStage(stage);
+    });
+
+    mainTimeline.appendChild(item);
+  });
+}
+
+function openStage(stage) {
+  document.documentElement.style.setProperty(
+    "--page-bg",
+    `url("./images/${stage.background}.jpg")`
+  );
+  document.body.classList.add("stage-view-open");
+  mainView.classList.remove("is-active");
+  detailView.classList.add("is-active");
+
+  detailStageTitle.textContent = stage.title;
+  detailStageSummary.textContent = stage.summary;
+
+  renderMiniTimeline(stage.subTimeline);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  toggleMailboxVisibility();
+}
+
+function isBilibiliUrl(url) {
+  return url.includes("bilibili.com") || url.includes("b23.tv");
+}
+
+function getBilibiliEmbedUrl(url) {
+  const bvidMatch = url.match(/BV[A-Za-z0-9]{10,}/);
+  if (bvidMatch) {
+    const bvid = bvidMatch[0];
+    const pMatch = url.match(/[?&]p=(\d+)/);
+    const p = pMatch ? pMatch[1] : "1";
+    return `//player.bilibili.com/player.html?isOutside=true&bvid=${bvid}&p=${p}&autoplay=0&danmaku=0`;
+  }
+  return null;
+}
+
+function renderMiniTimeline(subTimeline) {
+  miniTimeline.innerHTML = "";
+  subTimeline.forEach((subNode, index) => {
+    const item = document.createElement("article");
+    item.className = "sub-item";
+    item.style.animationDelay = `${index * 120}ms`;
+
+    let linksHtml = "";
+    subNode.links.forEach((linkItem) => {
+      if (linkItem.image) {
+        linksHtml += `
+          <div class="image-card" onclick="previewImage('${linkItem.image}')">
+            <strong>${linkItem.label}</strong>
+            <img class="thumbnail" src="${linkItem.image}" alt="${linkItem.label}">
+            <span class="image-hint">点击查看大图</span>
+          </div>
+        `;
+      } else if (isBilibiliUrl(linkItem.url)) {
+        const embedUrl = getBilibiliEmbedUrl(linkItem.url);
+        if (embedUrl) {
+          linksHtml += `
+            <div class="bilibili-card">
+              <strong>${linkItem.label}</strong>
+              <div class="video-wrapper">
+                <iframe src="${embedUrl}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+              </div>
+              <span class="bilibili-hint">点击放大播放</span>
+            </div>
+          `;
+        } else {
+          linksHtml += `
+            <a href="${linkItem.url}" target="_blank" rel="noopener noreferrer" class="link-card" onclick="window.open('${linkItem.url}', '_blank')">
+              <strong>${linkItem.label}</strong>
+              <span>点击跳转</span>
+            </a>
+          `;
+        }
+      } else {
+        linksHtml += `
+          <a href="${linkItem.url}" target="_blank" rel="noopener noreferrer" class="link-card" onclick="window.open('${linkItem.url}', '_blank')">
+            <strong>${linkItem.label}</strong>
+            <span>点击跳转</span>
+          </a>
+        `;
+      }
+    });
+
+    item.innerHTML = `
+      <div class="sub-card">
+        <div>
+          <h3>${subNode.title}</h3>
+          <p>${subNode.summary}</p>
+        </div>
+        <div class="link-grid">${linksHtml}</div>
+      </div>
+    `;
+
+    miniTimeline.appendChild(item);
+  });
+}
+
+function goBackToMain() {
+  document.documentElement.style.setProperty(
+    "--page-bg",
+    `url("./images/bg-main.jpg")`
+  );
+  document.body.classList.remove("stage-view-open");
+  detailView.classList.remove("is-active");
+  mainView.classList.add("is-active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  toggleMailboxVisibility();
+}
+
+function copyPageLinkHandler() {
+  const currentUrl = window.location.href;
+  navigator.clipboard
+    .writeText(currentUrl)
+    .then(() => {
+      showToast("分享链接已复制到剪贴板");
+    })
+    .catch(() => {
+      const textarea = document.createElement("textarea");
+      textarea.value = currentUrl;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      showToast("分享链接已复制到剪贴板");
+    });
+}
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("is-visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, 2600);
+}
+
+function previewImage(src) {
+  const preview = document.getElementById("imagePreview");
+  const img = document.getElementById("previewImage");
+  img.src = src;
+  preview.classList.add("is-visible");
+}
+
+function closeImagePreview() {
+  const preview = document.getElementById("imagePreview");
+  preview.classList.remove("is-visible");
+}
+
+backToMain.addEventListener("click", goBackToMain);
+copyPageLink.addEventListener("click", copyPageLinkHandler);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeImagePreview();
+    const lightboxVideo = document.querySelector(".lightbox-video.active");
+    if (lightboxVideo) {
+      lightboxVideo.querySelector(".close-video").click();
+    }
+  }
+});
+
+renderMainTimeline();
+
+const mailboxBtn = document.getElementById("mailboxBtn");
+const mailboxView = document.getElementById("mailboxView");
+const backFromMailbox = document.getElementById("backFromMailbox");
+
+function toggleMailboxVisibility() {
+  const mailboxContainer = document.querySelector(".floating-icons");
+  if (mainView.classList.contains("is-active")) {
+    mailboxContainer.classList.remove("hidden");
+  } else {
+    mailboxContainer.classList.add("hidden");
+  }
+}
+
+function openMailbox() {
+  mainView.classList.remove("is-active");
+  detailView.classList.remove("is-active");
+  mailboxView.classList.add("is-active");
+  document.getElementById("pageHero").style.display = "none";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  toggleMailboxVisibility();
+}
+
+function goBackFromMailbox() {
+  mailboxView.classList.remove("is-active");
+  mainView.classList.add("is-active");
+  document.getElementById("pageHero").style.display = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  toggleMailboxVisibility();
+}
+
+mailboxBtn.addEventListener("click", openMailbox);
+backFromMailbox.addEventListener("click", goBackFromMailbox);
+
+document.addEventListener("click", (e) => {
+  const videoWrapper = e.target.closest(".video-wrapper");
+  if (videoWrapper) {
+    e.preventDefault();
+    const iframe = videoWrapper.querySelector("iframe");
+    if (!iframe.src) {
+      const ds = iframe.getAttribute("data-src");
+      if (ds) iframe.src = ds;
+    }
+    videoWrapper.classList.add("playing");
+    
+    const lb = document.createElement("div");
+    lb.className = "lightbox-video active";
+    const inner = document.createElement("div");
+    inner.className = "video-inner";
+    const closeBtn = document.createElement("div");
+    closeBtn.className = "close-video";
+    closeBtn.innerHTML = "×";
+    closeBtn.title = "关闭";
+    
+    const wrapper = videoWrapper;
+    let player = iframe;
+    
+    inner.appendChild(player);
+    inner.appendChild(closeBtn);
+    lb.appendChild(inner);
+    document.body.appendChild(lb);
+    document.body.style.overflow = "hidden";
+    
+    function restorePlayer() {
+      if (player && wrapper) wrapper.appendChild(player);
+      lb.remove();
+      document.body.style.overflow = "";
+    }
+    
+    closeBtn.addEventListener("click", function(ev) {
+      ev.stopPropagation();
+      restorePlayer();
+    });
+    
+    lb.addEventListener("click", function(ev) {
+      if (ev.target === lb) restorePlayer();
+    });
+  }
+});
+
+toggleMailboxVisibility();

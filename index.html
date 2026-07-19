@@ -1592,7 +1592,7 @@
             window.scrollTo({ top: 0, behavior: "smooth" });
             toggleMailboxVisibility();
 
-            history.pushState({ view: 'detail', stageId: stage.id }, '', '');
+            window.location.hash = 'stage-' + stage.id;
         }
 
         function isBilibiliUrl(url) {
@@ -1682,7 +1682,7 @@
             window.scrollTo({ top: savedScrollPosition, behavior: "smooth" });
             toggleMailboxVisibility();
 
-            history.pushState({ view: 'main' }, '', '');
+            window.location.hash = 'main';
         }
 
         function copyPageLinkHandler() {
@@ -1786,11 +1786,24 @@
             toggleMailboxVisibility();
         }
 
-        window.addEventListener('popstate', handlePopState);
+        function restoreStateFromHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#stage-')) {
+                const stageId = hash.replace('#stage-', '');
+                const stage = mainStages.find(s => s.id === stageId);
+                if (stage) {
+                    openStage(stage);
+                }
+            } else if (hash === '#mailbox') {
+                openMailbox();
+            } else {
+                if (!mainView.classList.contains('is-active')) {
+                    goBackToMain();
+                }
+            }
+        }
 
-        window.addEventListener('load', function() {
-            history.replaceState({ view: 'main' }, '', '');
-        });
+        document.addEventListener('DOMContentLoaded', restoreStateFromHash);
 
         const mailboxBtn = document.getElementById("mailboxBtn");
         const mailboxView = document.getElementById("mailboxView");
@@ -1813,7 +1826,7 @@
             window.scrollTo({ top: 0, behavior: "smooth" });
             toggleMailboxVisibility();
 
-            history.pushState({ view: 'mailbox' }, '', '');
+            window.location.hash = 'mailbox';
         }
 
         function goBackFromMailbox() {
@@ -1823,7 +1836,7 @@
             window.scrollTo({ top: 0, behavior: "smooth" });
             toggleMailboxVisibility();
 
-            history.pushState({ view: 'main' }, '', '');
+            window.location.hash = 'main';
         }
 
         mailboxBtn.addEventListener("click", openMailbox);

@@ -1063,6 +1063,7 @@
         const toast = document.querySelector("#toast");
 
         let toastTimer = null;
+        let savedScrollPosition = 0;
 
         function getStageId(index) {
             return [
@@ -1575,6 +1576,7 @@
         }
 
         function openStage(stage) {
+            savedScrollPosition = window.scrollY;
             document.documentElement.style.setProperty(
                 "--page-bg",
                 `url("./images/${stage.background}.jpg")`
@@ -1637,7 +1639,7 @@
                   `;
                         } else {
                         linksHtml += `
-                    <a href="${linkItem.url}" rel="noopener noreferrer" class="link-card" onclick="event.preventDefault(); window.open('${linkItem.url}', '_blank'); return false;">
+                    <a href="${linkItem.url}" target="_blank" rel="noopener noreferrer" class="link-card">
                       <strong>${linkItem.label}</strong>
                       <span>点击跳转</span>
                     </a>
@@ -1645,7 +1647,7 @@
                     }
                 } else {
                     linksHtml += `
-                  <a href="${linkItem.url}" rel="noopener noreferrer" class="link-card" onclick="event.preventDefault(); window.open('${linkItem.url}', '_blank'); return false;">
+                  <a href="${linkItem.url}" target="_blank" rel="noopener noreferrer" class="link-card">
                     <strong>${linkItem.label}</strong>
                     <span>点击跳转</span>
                   </a>
@@ -1675,7 +1677,7 @@
             document.body.classList.remove("stage-view-open");
             detailView.classList.remove("is-active");
             mainView.classList.add("is-active");
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            window.scrollTo({ top: savedScrollPosition, behavior: "smooth" });
             toggleMailboxVisibility();
         }
 

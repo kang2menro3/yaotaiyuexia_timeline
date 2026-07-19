@@ -1021,10 +1021,8 @@
     <div class="floating-icons">
         <button class="floating-icon mailbox-icon" id="mailboxBtn" type="button" title="留言板">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                 <polyline points="22,6 12,13 2,6"></polyline>
-                <line x1="12" y1="17" x2="12" y2="22"></line>
-                <line x1="8" y1="22" x2="16" y2="22"></line>
             </svg>
         </button>
     </div>
@@ -1446,7 +1444,6 @@
                     link("6.16 合体录制陪看（全集糖点：约定旅游；月给瑶端吃的）", "https://weibo.com/6601653147/5314396192773924"),
                     link("6.17 上班", "https://weibo.com/8252020079/5310829702416160"),
                     link("6.17 转场擦车而过", "https://weibo.com/6264858702/5310818014989173"),
-                    link("6.17 意大利的蛋！","https://www.bilibili.com/video/BV1gRLX63EE8/?spm_id_from=333.1007.0.0&vd_source=4679e3b358c87e0f85b8f302fce9d9a1"),
                     link("6.17 乘风时光机结尾“月月你的在哪~”", "https://www.bilibili.com/video/BV1VEDQBfEjb?spm_id_from=333.788.videopod.episodes&vd_source=4679e3b358c87e0f85b8f302fce9d9a1&p=61"),
                     link("6.18 上班", "https://weibo.com/8252020079/5311173605986207"),
                     link("6.18 月看瑶彩排双人曲", "https://weibo.com/2277325014/5314097471817626"),
@@ -1534,6 +1531,7 @@
                     link("7.17 豆瓣路透汇总贴", "https://www.douban.com/doubanapp/dispatch?uri=%2Fgroup%2Ftopic%2F494229033&_spm_id=MTcyNjQ2MTUz&_i=8430042326fd73f"),
                     link("7.17 闺女录制路透碎糖汇总", "https://weibo.com/6419798760/5321804971250354"),
                     link("7.17 彩蛋之吃薯片，私下相处好可爱！", "https://weibo.com/5898473845/R97iRxob4"),
+                    link("7.17 牵手路透", "https://weibo.com/7831086904/5322165370234800"),
                 ],
             }, ];
         }
@@ -1638,21 +1636,21 @@
                     </div>
                   `;
                         } else {
-                            linksHtml += `
-                    <a href="${linkItem.url}" target="_blank" rel="noopener noreferrer" class="link-card" onclick="window.open('${linkItem.url}', '_blank')">
+                        linksHtml += `
+                    <a href="${linkItem.url}" rel="noopener noreferrer" class="link-card" onclick="event.preventDefault(); window.open('${linkItem.url}', '_blank'); return false;">
                       <strong>${linkItem.label}</strong>
                       <span>点击跳转</span>
                     </a>
                   `;
-                        }
-                    } else {
-                        linksHtml += `
-                  <a href="${linkItem.url}" target="_blank" rel="noopener noreferrer" class="link-card" onclick="window.open('${linkItem.url}', '_blank')">
+                    }
+                } else {
+                    linksHtml += `
+                  <a href="${linkItem.url}" rel="noopener noreferrer" class="link-card" onclick="event.preventDefault(); window.open('${linkItem.url}', '_blank'); return false;">
                     <strong>${linkItem.label}</strong>
                     <span>点击跳转</span>
                   </a>
                 `;
-                    }
+                }
                 });
 
                 item.innerHTML = `

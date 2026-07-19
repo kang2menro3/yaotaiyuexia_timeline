@@ -1591,6 +1591,8 @@
             renderMiniTimeline(stage.subTimeline);
             window.scrollTo({ top: 0, behavior: "smooth" });
             toggleMailboxVisibility();
+
+            history.pushState({ view: 'detail', stageId: stage.id }, '', '');
         }
 
         function isBilibiliUrl(url) {
@@ -1679,6 +1681,8 @@
             mainView.classList.add("is-active");
             window.scrollTo({ top: savedScrollPosition, behavior: "smooth" });
             toggleMailboxVisibility();
+
+            history.pushState({ view: 'main' }, '', '');
         }
 
         function copyPageLinkHandler() {
@@ -1735,6 +1739,59 @@
 
         renderMainTimeline();
 
+        function handlePopState(event) {
+            const state = event.state;
+            if (!state) {
+                if (!mainView.classList.contains('is-active')) {
+                    goBackToMain();
+                }
+                return;
+            }
+
+            if (state.view === 'main') {
+                if (!mainView.classList.contains('is-active')) {
+                    goBackToMain();
+                }
+            } else if (state.view === 'mailbox') {
+                if (!mailboxView.classList.contains('is-active')) {
+                    openMailbox();
+                }
+            } else if (state.view === 'detail' && state.stageId) {
+                const stage = mainStages.find(s => s.id === state.stageId);
+                if (stage) {
+                    if (detailView.classList.contains('is-active') && detailStageTitle.textContent !== stage.title) {
+                        openStageWithoutHistory(stage);
+                    } else if (!detailView.classList.contains('is-active')) {
+                        openStageWithoutHistory(stage);
+                    }
+                }
+            }
+        }
+
+        function openStageWithoutHistory(stage) {
+            savedScrollPosition = window.scrollY;
+            document.documentElement.style.setProperty(
+                '--page-bg',
+                `url("./images/${stage.background}.jpg")`
+            );
+            document.body.classList.add('stage-view-open');
+            mainView.classList.remove('is-active');
+            detailView.classList.add('is-active');
+
+            detailStageTitle.textContent = stage.title;
+            detailStageSummary.textContent = stage.summary;
+
+            renderMiniTimeline(stage.subTimeline);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            toggleMailboxVisibility();
+        }
+
+        window.addEventListener('popstate', handlePopState);
+
+        window.addEventListener('load', function() {
+            history.replaceState({ view: 'main' }, '', '');
+        });
+
         const mailboxBtn = document.getElementById("mailboxBtn");
         const mailboxView = document.getElementById("mailboxView");
         const backFromMailbox = document.getElementById("backFromMailbox");
@@ -1755,6 +1812,8 @@
             document.getElementById("pageHero").style.display = "none";
             window.scrollTo({ top: 0, behavior: "smooth" });
             toggleMailboxVisibility();
+
+            history.pushState({ view: 'mailbox' }, '', '');
         }
 
         function goBackFromMailbox() {
@@ -1763,6 +1822,8 @@
             document.getElementById("pageHero").style.display = "";
             window.scrollTo({ top: 0, behavior: "smooth" });
             toggleMailboxVisibility();
+
+            history.pushState({ view: 'main' }, '', '');
         }
 
         mailboxBtn.addEventListener("click", openMailbox);

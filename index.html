@@ -21,7 +21,7 @@
             --pink: #ffd6ea;
             --line: rgba(164, 116, 220, 0.42);
             --shadow: 0 22px 70px rgba(123, 83, 166, 0.2);
-            font-family: KaiTi, STKaiti, "楷体", "华文楷体", serif;
+            font-family: "SimSun", "宋体", KaiTi, STKaiti, "楷体", "华文楷体", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
         }
 
         * {
@@ -45,7 +45,8 @@
             inset: 0;
             z-index: -1;
             pointer-events: none;
-            background: var(--page-bg, url("./images/bg-main.jpg")) center / cover no-repeat fixed;
+            background: var(--page-bg, url("./images/bg-main.jpg")) center / contain no-repeat fixed;
+            background-size: 100% auto;
             content: "";
         }
 
